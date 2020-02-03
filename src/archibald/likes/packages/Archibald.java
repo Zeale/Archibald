@@ -2,7 +2,10 @@ package archibald.likes.packages;
 
 import java.util.Scanner;
 
+import org.alixia.javalibrary.strings.matching.Matching;
+
 import archibald.likes.packages.api.utils.CombinedIListener;
+import archibald.likes.packages.app.PublicCommandHandler;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -21,7 +24,15 @@ public class Archibald {
 
 	private final JDA instance;
 
+	public JDA getInstance() {
+		return instance;
+	}
+
+	private final PublicCommandHandler commandHandler;
+
 	public Archibald(String token) {
+		commandHandler = new PublicCommandHandler(Matching.build("+"), this);
+		messageHandler.register(event -> commandHandler.run(event));
 		JDABuilder builder = new JDABuilder(token);
 		try {
 			builder.addEventListeners((EventListener) event -> messageHandler.onEvent(event));
