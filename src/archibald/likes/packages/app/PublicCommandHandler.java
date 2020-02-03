@@ -6,10 +6,6 @@ package archibald.likes.packages.app;
 import static archibald.likes.packages.api.utils.DiscordUtils.canAttachFile;
 import static archibald.likes.packages.api.utils.DiscordUtils.canSendMessage;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,7 +14,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import org.alixia.javalibrary.JavaTools;
 import org.alixia.javalibrary.strings.matching.Matching;
@@ -44,6 +39,25 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  *
  */
 public class PublicCommandHandler {
+
+	private final BotCommandNamespace rootCommandNamespace = new BotCommandNamespace();
+
+	{
+		// Add command help.
+		rootCommandNamespace.addCommandHelp("hello", "Says hello to the invoker.", "hello", "hi");
+		// Add actual command.
+		rootCommandNamespace.new PublicCommand("hello", "hi") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				// data.args is the array of arguments that the invoker provides.
+
+				// If the invoker doesn't provide any arguments, reply "Hi." Otherwise, notify
+				// them of invoking the command wrong.
+				reply(data, data.args.length == 0 ? "Hi." : "That command doesn't take any arguments.");
+			}
+		};
+	}
 
 	private static boolean canatchfile(BotCommandInvocation<MessageReceivedEvent> o) {
 		return canAttachFile(o.getData().getChannel());
@@ -297,8 +311,6 @@ public class PublicCommandHandler {
 		}
 		return builder.toString();
 	}
-
-	private final BotCommandNamespace rootCommandNamespace = new BotCommandNamespace();
 
 	private Matching cmdMatching;
 
