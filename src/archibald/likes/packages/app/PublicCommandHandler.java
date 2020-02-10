@@ -19,6 +19,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.alixia.chatroom.api.QuickList;
 import org.alixia.javalibrary.JavaTools;
 import org.alixia.javalibrary.strings.matching.Matching;
 
@@ -154,6 +155,17 @@ public class PublicCommandHandler {
 				String[] args = data.args;
 				Arrays.sort(args);
 				reply(data, "[" + String.join(" ", args) + "]");
+			}
+		};
+
+		rootCommandNamespace.addCommandHelp("shuffle", "Shuffle a list of strings", "shuffle [args...]", "shf");
+		rootCommandNamespace.new PublicCommand("shuffle", "shf") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				List<String> list = new QuickList<>(data.args);
+				Collections.shuffle(list);
+				reply(data, list + "");
 			}
 		};
 	}
