@@ -118,6 +118,8 @@ public class PublicCommandHandler {
 					}, mil);
 				}
 
+				reply(data, "Your reminder was scheduled successfully.");
+
 			}
 		};
 	}
