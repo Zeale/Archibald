@@ -125,17 +125,28 @@ public class PublicCommandHandler {
 
 			}
 		};
+		
+		
+		
 
 		rootCommandNamespace.addCommandHelp("sort", "Sorts a list of Strings", "sort [args...]", "srt");
-		rootCommandNamespace.new PublicCommand() {
+		rootCommandNamespace.new PublicCommand("sort", "srt") {
 			@Override
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
-				String[] args = data.args;
-				Arrays.sort(args);
-				reply(data, "[" + String.join(" ", args) + "]");
+				if(data.args.length == 0) {
+					reply(data, "You need to specify the items you want sorted");
+				}
+				else 
+				{
+					String[] args = data.args;
+					Arrays.sort(args);
+					reply(data, "[" + String.join(" ", args) + "]");
+				}
 			}
 		};
 	}
+	
+	
 
 	private static boolean canatchfile(BotCommandInvocation<MessageReceivedEvent> o) {
 		return canAttachFile(o.getData().getChannel());
