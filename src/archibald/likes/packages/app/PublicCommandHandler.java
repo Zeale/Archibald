@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.alixia.javalibrary.JavaTools;
 import org.alixia.javalibrary.strings.matching.Matching;
@@ -57,6 +59,69 @@ public class PublicCommandHandler {
 				// If the invoker doesn't provide any arguments, reply "Hi." Otherwise, notify
 				// them of invoking the command wrong.
 				reply(data, data.args.length == 0 ? "Hi." : "That command doesn't take any arguments.");
+			}
+		};
+
+		rootCommandNamespace.addCommandHelp("remind-me",
+				"Schedules a reminder. The bot will ping you once the reminder goes up.",
+				"remind-me (time-till) [description...]", "remind");
+		rootCommandNamespace.new PublicCommand("remind", "remind-me") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				if (data.args.length == 0) {
+					reply(data, "You need to specify how long until I should remind you.");
+					return;
+				}
+
+				long mil;
+				try {
+					mil = Long.parseLong(data.args[0].substring(0, data.args[0].length() - 1)) * 1000;
+				} catch (NumberFormatException e) {
+					reply(data,
+							"Your first argument couldn't be parsed as an amount of time. Please make sure you're including a unit (one of either `s` (for seconds), `m` (for minutes), or `h` (for hours)).");
+					return;
+				}
+				switch (data.args[0].charAt(data.args.length - 1)) {
+				case 's':
+					break;
+				case 'h':
+					mil *= 60;
+				case 'm':
+					mil *= 60;
+					break;
+				default:
+					reply(data,
+							"Invalid time unit. Allowable units are `s` (for seconds), `m` (for minutes), or `h` (for hours).");
+					return;
+				}
+
+				if (data.args.length == 1) {
+					new Timer(true).schedule(new TimerTask() {
+
+						@Override
+						public void run() {
+							reply(data, "A reminder for: " + data.getData().getAuthor().getAsMention() + '.');
+						}
+					}, mil);
+				} else {
+					StringBuilder b = new StringBuilder();
+					b.append(data.args[1]);
+					for (int i = 2; i < data.args.length; i++)
+						b.append(' ').append(data.args[i]);
+
+					new Timer(true).schedule(new TimerTask() {
+
+						@Override
+						public void run() {
+							reply(data,
+									"Hey, " + data.getData().getAuthor().getAsMention() + ": `" + b.toString() + "`.");
+						}
+					}, mil);
+				}
+
+				reply(data, "Your reminder was scheduled successfully.");
+
 			}
 		};
 	}
