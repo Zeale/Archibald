@@ -43,6 +43,8 @@ public class PublicCommandHandler {
 	private final BotCommandNamespace rootCommandNamespace = new BotCommandNamespace();
 
 	{
+		rootCommandNamespace.makeHelpCommand();
+
 		// Add command help.
 		rootCommandNamespace.addCommandHelp("hello", "Says hello to the invoker.", "hello", "hi");
 		// Add actual command.
