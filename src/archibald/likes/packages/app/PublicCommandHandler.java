@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.alixia.javalibrary.JavaTools;
 import org.alixia.javalibrary.strings.matching.Matching;
@@ -57,6 +58,27 @@ public class PublicCommandHandler {
 				reply(data, data.args.length == 0 ? "Hi." : "That command doesn't take any arguments.");
 			}
 		};
+
+		rootCommandNamespace.addCommandHelp("mock", "Mock the given text", "mock (txt)", "mock-me");
+		rootCommandNamespace.new PublicCommand("mock", "mock-me") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				String msg = String.join(" ", data.args);
+				StringBuilder builder = new StringBuilder(msg);
+				Random rand = new Random();
+				for (int i = 0; i < msg.length(); i++) {
+					if (rand.nextInt(5) < 2) {
+						if (Character.isLowerCase(builder.charAt(i))) {
+							builder.setCharAt(i, Character.toUpperCase(builder.charAt(i)));
+						} else {
+							builder.setCharAt(i, Character.toLowerCase(builder.charAt(i)));
+						}
+					}
+				}
+			}
+		};
+
 	}
 
 	private static boolean canatchfile(BotCommandInvocation<MessageReceivedEvent> o) {
