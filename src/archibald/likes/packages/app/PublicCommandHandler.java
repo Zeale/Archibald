@@ -66,6 +66,23 @@ public class PublicCommandHandler {
 				reply(data, data.args.length == 0 ? "Hi." : "That command doesn't take any arguments.");
 			}
 		};
+		
+//		rootCommandNamespace.addCommandHelp("sort-mode", "Enters sort mode. This allows you to run sort mode commands without having to prepend the command names with `sort:`, such as in `sort:algorithms`.", "sort-mode", "sm");
+//		rootCommandNamespace.new PublicCommand("sort-mode", "sm") {
+//
+//			@Override
+//			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+//				if(data.args.length != 0) {
+//					reply(data, "This command doesn't take any arguments");
+//				}
+//				else
+//				{
+//					UserData user = instance.getInstance().getU
+//				}
+//				
+//			}
+//			
+//		};
 
 		rootCommandNamespace.addCommandHelp("mock", "Mock the given text", "mock (txt)", "mock-me");
 		rootCommandNamespace.new PublicCommand("mock", "mock-me") {
@@ -173,7 +190,7 @@ public class PublicCommandHandler {
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
 
 				if (data.command.equals("kill")) {
-					reply(data, JavaTools.pickRandomElement(replies));
+					//reply(data, JavaTools.pickRandomElement(replies));
 					instance.getInstance().shutdown();
 					
 				} else {

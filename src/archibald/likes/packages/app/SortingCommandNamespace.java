@@ -2,56 +2,64 @@ package archibald.likes.packages.app;
 
 import archibald.likes.packages.api.commands.BotCommandInvocation;
 import archibald.likes.packages.api.commands.BotCommandNamespace;
-import archibald.likes.packages.app.PublicCommandHelpBook.CommandHelp;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class SortingCommandNamespace extends BotCommandNamespace {
 	{
+
 		makeHelpCommand();
-		addCommandHelp("sort", "Sorts a list of based off a given sorting algorithm. Type \"+sort:help\" for more information", "sort [args...]", "srt");
-		new PublicCommand("sort", "srt")
-		{
+
+		PublicCommand cmd = new PublicCommand("algorithms", "algo") {
+			String[] listOfAlgos = { "Name          ->\t[command]", "-----------------------------",
+					"Bubble Sort   ->\t[-bbs]", "Bogo Sort     ->\t[-bgs]" };
+
 			@Override
-			protected void run(BotCommandInvocation<MessageReceivedEvent> data) 
-			{
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				StringBuilder replyString = new StringBuilder("```");
+				for (String s : listOfAlgos)
+					replyString.append(s).append('\n');
+				replyString.append("```");
+				reply(data, replyString.toString());
+			}
+		};
+
+		addCommandHelp("sort",
+				"Sorts a list of based off a given sorting algorithm.\nType `+sort:algorithms` for more information",
+				"sort [args...]", "srt");
+		new PublicCommand("sort", "srt") {
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
 				if (data.args.length == 0) {
 					reply(data, "You need to specify the items you want sorted");
-				} 
-				else 
-				{
+				} else {
 					String[] args = data.args;
 					long startTime = 0;
 					long endTime = 0;
 					long elapsedTime = 0;
-					switch(args[0]) 
-					{
-						case "-bs":
-							startTime = System.nanoTime();
-							args = bubbleSort(args);
-							endTime = System.nanoTime();
-							break;
-						default:
-							reply(data, "Type of Sort not specified");
-							break;
+					switch (args[0]) {
+					case "-bbs":
+						startTime = System.nanoTime();
+						args = bubbleSort(args);
+						endTime = System.nanoTime();
+						break;
+					default:
+						reply(data, "Type of sort not specified");
+						cmd.act(data);
+						break;
 					}
 					elapsedTime = endTime - startTime;
-					if(elapsedTime != 0)
-						reply(data, "Result -> [" + String.join(", ", args) + "]" + "\n" +
-							"Sort took " + elapsedTime + " Nanoseconds");	
+					if (elapsedTime != 0)
+						reply(data, "Result -> [" + String.join(", ", args) + "]" + "\n" + "Sort took " + elapsedTime
+								+ " Nanoseconds");
 				}
 			}
 		};
+
+		addCommandHelp("algorithms", "Displays the list of algorithms currently supported", "algorithms", "algo");
+
 	}
-	
-	
-//	@Override
-//	public void addCommandHelp(CommandHelp help) {
-//		super.addCommandHelp(help);
-//		
-//	}
-	
-	
-	//Algorithms
+
+	// Algorithms
 	public static <T extends Comparable<T>> T[] bubbleSort(T[] array) {
 		int n = array.length;
 		for (int i = 0; i < n; i++) {
