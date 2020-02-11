@@ -147,19 +147,14 @@ public class PublicCommandHandler {
 
 			}
 		};
-		
-		
-		
 
 		rootCommandNamespace.addCommandHelp("sort", "Sorts a list of Strings", "sort [args...]", "srt");
 		rootCommandNamespace.new PublicCommand("sort", "srt") {
 			@Override
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
-				if(data.args.length == 0) {
+				if (data.args.length == 0) {
 					reply(data, "You need to specify the items you want sorted");
-				}
-				else 
-				{
+				} else {
 					String[] args = data.args;
 					Arrays.sort(args);
 					reply(data, "[" + String.join(" ", args) + "]");
@@ -174,12 +169,21 @@ public class PublicCommandHandler {
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
 				List<String> list = new QuickList<>(data.args);
 				Collections.shuffle(list);
-				reply(data, list + "");
+				reply(data, list + "");// just like make the list.toString.
 			}
 		};
+
+		rootCommandNamespace.addCommandHelp("open-google", "Open the website Google", "open [args]", "opg");
+		rootCommandNamespace.new PublicCommand("open_google", "opg") {
+			@Override
+
+			// must end with reply function call
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				reply(data, "http://www.google.com/search?q=" + data.args[0]);
+			}
+		};
+
 	}
-	
-	
 
 	private static boolean canatchfile(BotCommandInvocation<MessageReceivedEvent> o) {
 		return canAttachFile(o.getData().getChannel());
