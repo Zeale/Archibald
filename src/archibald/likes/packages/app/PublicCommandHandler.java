@@ -159,7 +159,7 @@ public class PublicCommandHandler {
 			}
 		};
 
-		rootCommandNamespace.addCommandHelp("stop", "Stops the instance of the JDA", "kill");
+		rootCommandNamespace.addCommandHelp("stop", "Stops the instance of the JDA", "stop", "kill");
 		rootCommandNamespace.new PublicCommand("stop", "kill") {
 
 			String[] replies = { "GOODBYE CRUEL WORLD",
@@ -173,7 +173,6 @@ public class PublicCommandHandler {
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
 
 				if (data.command.equals("kill")) {
-					Random rand = new Random();
 					reply(data, JavaTools.pickRandomElement(replies));
 					instance.getInstance().shutdown();
 					
