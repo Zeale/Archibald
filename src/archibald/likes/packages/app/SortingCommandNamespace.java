@@ -35,11 +35,10 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 						break;
 					case "-sls":
 						startTime = System.nanoTime();
-						args = bubbleSort(args);
+						args = selectionSort(args);
 						endTime = System.nanoTime();
 						break;
 					default:
-						reply(data, "Type of sort not specified");
 						replyAlgorithms(data);
 						break;
 					}
@@ -81,7 +80,7 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 		for(int i = 0; i < n - 1; i++) {
 			minIndex = i;
 			for(int j = i + 1; j < n; j++) {
-				if(array[minIndex].compareTo(array[j]) < 0) {
+				if(array[minIndex].compareTo(array[j]) > 0) {
 					minIndex = j;
 				}
 			}
@@ -102,7 +101,8 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 				"Selection Sort   ->\t[-sls]"
 				};
 		
-		StringBuilder replyString = new StringBuilder("```");
+		StringBuilder replyString = new StringBuilder("`+sort:sort [command] [args...]`\n");
+		replyString.append("```");
 		for (String s : listOfAlgos)
 			replyString.append(s).append('\n');
 		replyString.append("```");
