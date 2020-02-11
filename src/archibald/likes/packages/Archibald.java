@@ -31,7 +31,7 @@ public class Archibald {
 	private final PublicCommandHandler commandHandler;
 
 	public Archibald(String token) {
-		commandHandler = new PublicCommandHandler(Matching.build("+"), this);
+		commandHandler = new PublicCommandHandler(Matching.build(">", "+"), this);
 		messageHandler.register(event -> commandHandler.run(event));
 		JDABuilder builder = new JDABuilder(token);
 		try {

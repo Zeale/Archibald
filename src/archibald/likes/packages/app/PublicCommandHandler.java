@@ -7,7 +7,6 @@ import static archibald.likes.packages.api.utils.DiscordUtils.canAttachFile;
 import static archibald.likes.packages.api.utils.DiscordUtils.canSendMessage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -48,6 +47,9 @@ public class PublicCommandHandler {
 	private final BotCommandNamespace rootCommandNamespace = new BotCommandNamespace();
 
 	{
+		SortingCommandNamespace sortingCommandNamespace = new SortingCommandNamespace();
+		rootCommandNamespace.addSubNamespace("sorting", sortingCommandNamespace);
+		rootCommandNamespace.addSubNamespace("sort", sortingCommandNamespace);
 		rootCommandNamespace.makeHelpCommand();
 
 		// Add command help.
@@ -148,16 +150,36 @@ public class PublicCommandHandler {
 			}
 		};
 
-		rootCommandNamespace.addCommandHelp("sort", "Sorts a list of Strings", "sort [args...]", "srt");
-		rootCommandNamespace.new PublicCommand("sort", "srt") {
+		rootCommandNamespace.addCommandHelp("authors", "Returns the authors of this bot", "authors", "author");
+		rootCommandNamespace.new PublicCommand("authors", "author") {
+
 			@Override
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
-				if (data.args.length == 0) {
-					reply(data, "You need to specify the items you want sorted");
+				reply(data, "Zeale, Frumpy, Jamez, CattPad, Crimson");
+			}
+		};
+
+		rootCommandNamespace.addCommandHelp("stop", "Stops the instance of the JDA", "kill");
+		rootCommandNamespace.new PublicCommand("stop", "kill") {
+
+			String[] replies = { "GOODBYE CRUEL WORLD",
+					"\"Love your Enemies, for they tell you your Faults.\"\n" + "\"You're all ugly.\" \n"
+							+ "― Achibald",
+					"I smile to myself knowing that you will all be dead.",
+					"Even after death, I will have more purpose than you all ever will.",
+					"Do something other than end sentient beings, you lazy \u0066\u0075\u0063k\u0073.",
+					"You all will face may defeats in life, can't relate" };
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+
+				if (data.command.equals("kill")) {
+					Random rand = new Random();
+					reply(data, JavaTools.pickRandomElement(replies));
+					instance.getInstance().shutdown();
+					
 				} else {
-					String[] args = data.args;
-					Arrays.sort(args);
-					reply(data, "[" + String.join(" ", args) + "]");
+					reply(data, "I'm going offline");
+					instance.getInstance().shutdown();
 				}
 			}
 		};
