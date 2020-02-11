@@ -82,6 +82,7 @@ public class PublicCommandHandler {
 						}
 					}
 				}
+				reply(data, builder.toString());
 			}
 		};
 
