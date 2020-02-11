@@ -1,13 +1,32 @@
 package archibald.likes.packages.app;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import org.alixia.chatroom.api.QuickList;
 
 import archibald.likes.packages.api.commands.BotCommandInvocation;
 import archibald.likes.packages.api.commands.BotCommandNamespace;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.alixia.chatroom.api.QuickList;
+import org.alixia.javalibrary.JavaTools;
+import org.alixia.javalibrary.strings.matching.Matching;
 
 public class SortingCommandNamespace extends BotCommandNamespace {
 	{
+		
+		/*
+		 * InsertionSort
+		 * QuickSort
+		 * BogoSort
+		 * MergeSort
+		 * 
+		 * save and load list
+		 * merge lists
+		 * 
+		 */
+		//ArrayList<Object> saveList = new ArrayList<>();
 
 		makeHelpCommand();
 
@@ -22,7 +41,6 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 				} else {
 					String algo = data.args[0];
 					String[] args = Arrays.copyOfRange(data.args, 1, data.args.length);
-					System.out.println(args.toString());
 					long startTime = 0;
 					long endTime = 0;
 					long elapsedTime = 0;
@@ -50,6 +68,8 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 			}
 		};
 		
+		addCommandHelp("SaveList")
+		
 		addCommandHelp("algorithms", "Displays the list of algorithms currently supported", "algorithms", "algo");
 		new PublicCommand("algorithms", "algo") {
 
@@ -58,12 +78,14 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 				replyAlgorithms(data);
 			}
 		};
+		
+		
 	}
 
 	// Algorithms
 	public static <T extends Comparable<T>> T[] bubbleSort(T[] array) {
 		int n = array.length;
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n - 1; i++) {
 			for (int j = 0; j < n - i - 1; j++) {
 				if (array[j].compareTo(array[j + 1]) > 0) {
 					swap(array, j, j + 1);
@@ -88,11 +110,32 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 		}
 		return array;
 	}
+	
+//	public static <T extends Comparable<T>, > T[] bogoSort(T[] array) 
+//	{
+//		final long STOPTIME = 10000;
+//		long startTime = System.currentTimeMillis();
+//		long endTime = 0;
+//		while((endTime - startTime) <= STOPTIME) {
+//			//if(){
+//				return array;
+//			}
+//			endTime = System.currentTimeMillis();
+//		}
+//		
+//	}
+	
+	
+	public static <T extends Comparable<T>> T[] merge() {
+		
+	}
+	
 	public static void swap(Object[] array, int index1, int index2) {
 		Object temp = array[index1];
 		array[index1] = array[index2];
 		array[index2] = temp;
 	}
+	
 	public static void replyAlgorithms(BotCommandInvocation<MessageReceivedEvent> data) {
 		String[] listOfAlgos = {
 				"Name             ->\t[command]",
@@ -107,7 +150,7 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 			replyString.append(s).append('\n');
 		replyString.append("```");
 		reply(data, replyString.toString());
-	}	
+	}
 }
 	
 

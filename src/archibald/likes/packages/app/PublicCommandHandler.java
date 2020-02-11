@@ -190,7 +190,7 @@ public class PublicCommandHandler {
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
 
 				if (data.command.equals("kill")) {
-					//reply(data, JavaTools.pickRandomElement(replies));
+					reply(data, JavaTools.pickRandomElement(replies));
 					instance.getInstance().shutdown();
 					
 				} else {
