@@ -67,6 +67,15 @@ public class PublicCommandHandler {
 			}
 		};
 
+		rootCommandNamespace.addCommandHelp("echo", "Echoes the given arguments back to the user.", "echo [args...]");
+		rootCommandNamespace.new PublicCommand("echo") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				reply(data, String.join(" ", data.args));
+			}
+		};
+
 		rootCommandNamespace.addCommandHelp("mock", "Mock the given text", "mock (txt)", "mock-me");
 		rootCommandNamespace.new PublicCommand("mock", "mock-me") {
 
