@@ -1,7 +1,8 @@
 package archibald.likes.packages.app;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.alixia.chatroom.api.QuickList;
@@ -9,24 +10,15 @@ import org.alixia.chatroom.api.QuickList;
 import archibald.likes.packages.api.commands.BotCommandInvocation;
 import archibald.likes.packages.api.commands.BotCommandNamespace;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.alixia.chatroom.api.QuickList;
-import org.alixia.javalibrary.JavaTools;
-import org.alixia.javalibrary.strings.matching.Matching;
 
 public class SortingCommandNamespace extends BotCommandNamespace {
 	{
-		
+
 		/*
-		 * InsertionSort
-		 * QuickSort
-		 * BogoSort
-		 * MergeSort
+		 * InsertionSort QuickSort BogoSort MergeSort
 		 * 
-		 * save and load list
-		 * merge lists
-		 * 
+		 * save and load list merge lists
 		 */
-		//ArrayList<Object> saveList = new ArrayList<>();
 
 		makeHelpCommand();
 
@@ -44,7 +36,7 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 					long startTime = 0;
 					long endTime = 0;
 					long elapsedTime = 0;
-					
+
 					switch (algo) {
 					case "-bbs":
 						startTime = System.nanoTime();
@@ -67,19 +59,26 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 				}
 			}
 		};
-		
-		addCommandHelp("SaveList")
-		
+
 		addCommandHelp("algorithms", "Displays the list of algorithms currently supported", "algorithms", "algo");
 		new PublicCommand("algorithms", "algo") {
 
 			@Override
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+
 				replyAlgorithms(data);
 			}
 		};
-		
-		
+
+		addCommandHelp("save", "Saves a list to the bot", "save (name) [args..]");
+		new PublicCommand("save") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+
+			}
+
+		};
 	}
 
 	// Algorithms
@@ -95,14 +94,13 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 		return array;
 	}
 
-	
 	public static <T extends Comparable<T>> T[] selectionSort(T[] array) {
 		int minIndex;
 		int n = array.length;
-		for(int i = 0; i < n - 1; i++) {
+		for (int i = 0; i < n - 1; i++) {
 			minIndex = i;
-			for(int j = i + 1; j < n; j++) {
-				if(array[minIndex].compareTo(array[j]) > 0) {
+			for (int j = i + 1; j < n; j++) {
+				if (array[minIndex].compareTo(array[j]) > 0) {
 					minIndex = j;
 				}
 			}
@@ -110,40 +108,41 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 		}
 		return array;
 	}
-	
-//	public static <T extends Comparable<T>, > T[] bogoSort(T[] array) 
-//	{
-//		final long STOPTIME = 10000;
-//		long startTime = System.currentTimeMillis();
-//		long endTime = 0;
-//		while((endTime - startTime) <= STOPTIME) {
-//			//if(){
-//				return array;
-//			}
-//			endTime = System.currentTimeMillis();
-//		}
-//		
-//	}
-	
-	
-	public static <T extends Comparable<T>> T[] merge() {
+
+	public static <T extends Comparable<T>> T[] bogoSort(T[] array) 
+	{
+		List<T> list = new QuickList<>(array);
 		
+		final long STOPTIME = 10000;
+		long startTime = System.currentTimeMillis();
+		long endTime = 0;
+		while((endTime - startTime) <= STOPTIME) {
+			Iterator iter = list.iterator();
+			while(iter.hasNext()) {
+				T item = (T) iter.next();
+				if(item.compareTo((T) iter.next()) < 0) {
+					
+				}
+			}
+			
+			endTime = System.currentTimeMillis();
+		}
 	}
-	
+
+	public static <T extends Comparable<T>> T[] merge() {
+
+	}
+
 	public static void swap(Object[] array, int index1, int index2) {
 		Object temp = array[index1];
 		array[index1] = array[index2];
 		array[index2] = temp;
 	}
-	
+
 	public static void replyAlgorithms(BotCommandInvocation<MessageReceivedEvent> data) {
-		String[] listOfAlgos = {
-				"Name             ->\t[command]",
-				"--------------------------------",
-				"Bubble Sort      ->\t[-bbs]",
-				"Selection Sort   ->\t[-sls]"
-				};
-		
+		String[] listOfAlgos = { "Name             ->\t[command]", "--------------------------------",
+				"Bubble Sort      ->\t[-bbs]", "Selection Sort   ->\t[-sls]" };
+
 		StringBuilder replyString = new StringBuilder("`+sort:sort [command] [args...]`\n");
 		replyString.append("```");
 		for (String s : listOfAlgos)
@@ -152,5 +151,3 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 		reply(data, replyString.toString());
 	}
 }
-	
-
