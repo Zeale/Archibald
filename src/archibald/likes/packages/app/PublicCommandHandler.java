@@ -105,7 +105,7 @@ public class PublicCommandHandler {
 							"Your first argument couldn't be parsed as an amount of time. Please make sure you're including a unit (one of either `s` (for seconds), `m` (for minutes), or `h` (for hours)).");
 					return;
 				}
-				switch (data.args[0].charAt(data.args.length - 1)) {
+				switch (data.args[0].charAt(data.args[0].length() - 1)) {
 				case 's':
 					break;
 				case 'h':
