@@ -6,6 +6,8 @@ package archibald.likes.packages.app;
 import static archibald.likes.packages.api.utils.DiscordUtils.canAttachFile;
 import static archibald.likes.packages.api.utils.DiscordUtils.canSendMessage;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -65,6 +67,15 @@ public class PublicCommandHandler {
 			}
 		};
 
+		rootCommandNamespace.addCommandHelp("echo", "Echoes the given arguments back to the user.", "echo [args...]");
+		rootCommandNamespace.new PublicCommand("echo") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				reply(data, String.join(" ", data.args));
+			}
+		};
+
 		rootCommandNamespace.addCommandHelp("mock", "Mock the given text", "mock (txt)", "mock-me");
 		rootCommandNamespace.new PublicCommand("mock", "mock-me") {
 
@@ -82,6 +93,7 @@ public class PublicCommandHandler {
 						}
 					}
 				}
+				reply(data, builder.toString());
 			}
 		};
 
@@ -175,11 +187,16 @@ public class PublicCommandHandler {
 
 		rootCommandNamespace.addCommandHelp("open-google", "Open the website Google", "open [args]", "opg");
 		rootCommandNamespace.new PublicCommand("open_google", "opg") {
+			@SuppressWarnings("deprecation")
 			@Override
 
 			// must end with reply function call
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
-				reply(data, "http://www.google.com/search?q=" + data.args[0]);
+				try {
+					reply(data, "http://www.google.com/search?q=" + URLEncoder.encode(data.args[0], "UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					reply(data, "http://www.google.com/search?q=" + URLEncoder.encode(data.args[0]));
+				}
 			}
 		};
 
