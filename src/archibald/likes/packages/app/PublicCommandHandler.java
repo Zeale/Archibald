@@ -66,7 +66,7 @@ public class PublicCommandHandler {
 				reply(data, data.args.length == 0 ? "Hi." : "That command doesn't take any arguments.");
 			}
 		};
-		
+
 //		rootCommandNamespace.addCommandHelp("sort-mode", "Enters sort mode. This allows you to run sort mode commands without having to prepend the command names with `sort:`, such as in `sort:algorithms`.", "sort-mode", "sm");
 //		rootCommandNamespace.new PublicCommand("sort-mode", "sm") {
 //
@@ -124,7 +124,7 @@ public class PublicCommandHandler {
 							"Your first argument couldn't be parsed as an amount of time. Please make sure you're including a unit (one of either `s` (for seconds), `m` (for minutes), or `h` (for hours)).");
 					return;
 				}
-				switch (data.args[0].charAt(data.args.length - 1)) {
+				switch (data.args[0].charAt(data.args[0].length() - 1)) {
 				case 's':
 					break;
 				case 'h':
@@ -186,13 +186,14 @@ public class PublicCommandHandler {
 					"Even after death, I will have more purpose than you all ever will.",
 					"Do something other than end sentient beings, you lazy \u0066\u0075\u0063k\u0073.",
 					"You all will face may defeats in life, can't relate" };
+
 			@Override
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
 
 				if (data.command.equals("kill")) {
 					reply(data, JavaTools.pickRandomElement(replies));
 					instance.getInstance().shutdown();
-					
+
 				} else {
 					reply(data, "I'm going offline");
 					instance.getInstance().shutdown();
@@ -217,6 +218,7 @@ public class PublicCommandHandler {
 
 			// must end with reply function call
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				System.out.println("Im running");
 				reply(data, "http://www.google.com/search?q=" + data.args[0]);
 			}
 		};

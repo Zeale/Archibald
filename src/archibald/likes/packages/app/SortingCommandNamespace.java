@@ -86,7 +86,7 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 		int n = array.length;
 		for (int i = 0; i < n - 1; i++) {
 			for (int j = 0; j < n - i - 1; j++) {
-				if (array[j].compareTo(array[j + 1]) > 0) {
+				if (array[j].compareTo(array[j + 1]) <= 0) {
 					swap(array, j, j + 1);
 				}
 			}
@@ -100,7 +100,7 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 		for (int i = 0; i < n - 1; i++) {
 			minIndex = i;
 			for (int j = i + 1; j < n; j++) {
-				if (array[minIndex].compareTo(array[j]) > 0) {
+				if (array[minIndex].compareTo(array[j]) <= 0) {
 					minIndex = j;
 				}
 			}
@@ -109,29 +109,35 @@ public class SortingCommandNamespace extends BotCommandNamespace {
 		return array;
 	}
 
-	public static <T extends Comparable<T>> T[] bogoSort(T[] array) 
-	{
-		List<T> list = new QuickList<>(array);
-		
-		final long STOPTIME = 10000;
-		long startTime = System.currentTimeMillis();
-		long endTime = 0;
-		while((endTime - startTime) <= STOPTIME) {
-			Iterator iter = list.iterator();
-			while(iter.hasNext()) {
-				T item = (T) iter.next();
-				if(item.compareTo((T) iter.next()) < 0) {
-					
-				}
-			}
-			
-			endTime = System.currentTimeMillis();
-		}
-	}
+//	public static <T extends Comparable<T>> T[] bogoSort(T[] array) 
+//	{
+//		List<T> list = new QuickList<>(array);
+//		
+//		final long STOPTIME = 10000;
+//		long startTime = System.currentTimeMillis();
+//		long endTime = 0;
+//		while((endTime - startTime) <= STOPTIME)
+//		{
+//			Iterator iter = list.iterator();
+//			while(iter.hasNext()) {
+//				T item = (T) iter.next();
+//				if(item.compareTo((T) iter.next()) > 0) {
+//					Collections.shuffle(list);
+//					break;
+//				}
+//				else
+//				{
+//					
+//				}
+//			}
+//			endTime = System.currentTimeMillis();
+//			
+//		}
+//	}
 
-	public static <T extends Comparable<T>> T[] merge() {
-
-	}
+//	public static <T extends Comparable<T>> T[] merge() {
+//
+//	}
 
 	public static void swap(Object[] array, int index1, int index2) {
 		Object temp = array[index1];
