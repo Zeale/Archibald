@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.*;
 
 import org.alixia.chatroom.api.QuickList;
 import org.alixia.javalibrary.JavaTools;
@@ -189,7 +190,6 @@ public class PublicCommandHandler {
 		rootCommandNamespace.new PublicCommand("open_google", "opg") {
 			@SuppressWarnings("deprecation")
 			@Override
-
 			// must end with reply function call
 			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
 				try {
@@ -197,6 +197,26 @@ public class PublicCommandHandler {
 				} catch (UnsupportedEncodingException e) {
 					reply(data, "http://www.google.com/search?q=" + URLEncoder.encode(data.args[0]));
 				}
+			}
+		};
+
+		rootCommandNamespace.addCommandHelp("sticky-note", "Write some messages in the file", "sticky [args..]", "stk");
+		rootCommandNamespace.new PublicCommand("sticky-note", "stk") {
+
+			@Override
+			// input filestream to read a file, output filestream to write a file
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				File userFile = new File(
+						"C:/Program Files/Archibald/Data/" + data.getData().getAuthor().getId() + ".txt");
+				userFile.getParentFile().mkdirs();
+				try (PrintWriter writer = new PrintWriter(userFile)) {
+					writer.append(data.args[0]);
+					reply(data, "sticky note saved.");
+				} catch (Exception e) {
+					e.printStackTrace();
+					reply(data, "Sorry, fail to save the sticky note.");
+				}
+
 			}
 		};
 
