@@ -6,6 +6,9 @@ package archibald.likes.packages.app;
 import static archibald.likes.packages.api.utils.DiscordUtils.canAttachFile;
 import static archibald.likes.packages.api.utils.DiscordUtils.canSendMessage;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -18,9 +21,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.io.*;
 
 import org.alixia.chatroom.api.QuickList;
 import org.alixia.javalibrary.JavaTools;
@@ -186,7 +189,7 @@ public class PublicCommandHandler {
 			}
 		};
 
-		rootCommandNamespace.addCommandHelp("open-google", "Open the website Google", "open [args]", "opg");
+		rootCommandNamespace.addCommandHelp("open_google", "Open the website Google", "open [args]", "opg");
 		rootCommandNamespace.new PublicCommand("open_google", "opg") {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -217,6 +220,26 @@ public class PublicCommandHandler {
 					reply(data, "Sorry, fail to save the sticky note.");
 				}
 
+			}
+		};
+		rootCommandNamespace.addCommandHelp("sticky-show", "Show the things you wrote on the sticky note",
+				"stickly-show", "sks");
+		rootCommandNamespace.new PublicCommand("sticky-show", "sks") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				File file = new File("C:/Program Files/Archibald/Data/" + data.getData().getAuthor().getId() + ".txt");
+				StringBuilder replyMessage = new StringBuilder();
+				try (Scanner scan = new Scanner(file)) {
+					while (scan.hasNext())
+						replyMessage.append(scan.nextLine());
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					reply(data, "An error occurred: `"+e.getMessage()+"`.");
+					return;
+				}
+
+				reply(data, "Sticky-note: \n" + replyMessage.toString());
 			}
 		};
 
