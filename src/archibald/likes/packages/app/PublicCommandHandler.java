@@ -253,6 +253,18 @@ public class PublicCommandHandler {
 			}
 		};
 
+		rootCommandNamespace.addCommandHelp("pet", "Gets a random pet!", "pet");
+		rootCommandNamespace.new PublicCommand("pet") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				Pet pet = PetFactory.getRandomPet();
+				data.getData().getChannel().sendMessage(
+						new EmbedBuilder().setColor(pet.getColor()).addField("Pet!", pet.toString(), false).build())
+						.queue();
+			}
+		};
+
 	}
 
 	private static boolean canatchfile(BotCommandInvocation<MessageReceivedEvent> o) {
