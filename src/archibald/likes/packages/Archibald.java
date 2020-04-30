@@ -6,6 +6,7 @@ import org.alixia.javalibrary.strings.matching.Matching;
 
 import archibald.likes.packages.api.utils.CombinedIListener;
 import archibald.likes.packages.app.PublicCommandHandler;
+import archibald.likes.packages.app.UserTracker;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -33,6 +34,7 @@ public class Archibald {
 	public Archibald(String token) {
 		commandHandler = new PublicCommandHandler(Matching.build("+"), this);
 		messageHandler.register(event -> commandHandler.run(event));
+		messageHandler.register(event -> UserTracker.getTracker().handleMessage(event.getMessage()));
 		JDABuilder builder = new JDABuilder(token);
 		try {
 			builder.addEventListeners((EventListener) event -> messageHandler.onEvent(event));

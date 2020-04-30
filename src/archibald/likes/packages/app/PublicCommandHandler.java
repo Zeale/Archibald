@@ -235,11 +235,21 @@ public class PublicCommandHandler {
 						replyMessage.append(scan.nextLine());
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
-					reply(data, "An error occurred: `"+e.getMessage()+"`.");
+					reply(data, "An error occurred: `" + e.getMessage() + "`.");
 					return;
 				}
 
 				reply(data, "Sticky-note: \n" + replyMessage.toString());
+			}
+		};
+
+		rootCommandNamespace.addCommandHelp("get-first-msg",
+				"Retrieves the first message that the bot saw you post since it last came online.", "get-first-msg");
+		rootCommandNamespace.new PublicCommand("get-first-msg") {
+
+			@Override
+			protected void run(BotCommandInvocation<MessageReceivedEvent> data) {
+				reply(data, UserTracker.getTracker().getMsg(data.getData().getAuthor()));
 			}
 		};
 
